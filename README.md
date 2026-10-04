@@ -57,8 +57,8 @@ configuration and all input tables explicitly:
   --omega-b 0.267
 ```
 
-For fragmentation-only mode 1, use the same command and change only `--mode 3`
-to `--mode 1`. The Recomb/Wigner and omega options may remain in the command;
+For fragmentation-only mode 1, use the same command and change `--mode 3`
+to `--mode 1`, `--tchem 0.160' to `--tchem 0.170 '. The Recomb/Wigner and omega options may remain in the command;
 they are accepted but are not used in mode 1.
 
 These values currently match the charm production defaults.
@@ -141,7 +141,7 @@ matching arguments in a complete mode-3 command:
   --wigner-table data/max_wigner_c.dat
 ```
 
-## Hadron origin metadata
+## Hadron origin flag
 
 Each particle carries a hadronization-origin tag internally:
 
