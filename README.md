@@ -2,22 +2,16 @@
 
 ## Overview
 
-FragReco is the current implementation of the `HQ-fragANDreco` heavy-quark
-(HQ) hadronization framework for vacuum and the quark--gluon plasma (QGP). It
-provides vacuum fragmentation and a hybrid QGP treatment that combines
-fragmentation with recombination (coalescence, implemented here as iSRM). The
-current production setup is charm focused and includes charm-hadron feeddown.
+Implementation of the heavy quark hadronization framework for the vacuum and the quark-gluon plasma.
+It provides vacuum fragmentation and a hybrid QGP treatment that combines
+fragmentation with recombination (coalescence, implemented here as iSRM). 
 
 In the fragmentation path, heavy quarks are converted into hadrons with an
 explicit Peterson momentum-fragmentation function. Hadron-species probabilities
-are sampled separately from thermal/statistical charm-chemistry weights. The
-original `HQ-fragANDreco` README described this path more broadly as
-"HQET-inspired fragmentation"; the associated model reference is
-[Charm-hadron production in pp and AA collisions](https://arxiv.org/abs/2002.00392),
-but this implementation should not be read as including every ingredient of
-that work.
+are sampled separately from a statistical hadronization model. The associated reference is
+[Charm-hadron production in pp and AA collisions](https://arxiv.org/abs/2002.00392).
 
-In the hybrid QGP path, recombination is attempted first and heavy quarks that
+In the hybrid QGP path, recombination is attempted first, and heavy quarks that
 do not recombine follow the fragmentation path. The corresponding model and
 hadron-chemistry context are described in
 [Charmed hadron chemistry in relativistic heavy-ion collisions](https://arxiv.org/abs/1911.00456).
@@ -28,13 +22,9 @@ FragReco requires CMake 3.16 or newer, a C++17 compiler, and Boost
 Program_options.
 
 ```bash
-cmake -S . -B build -DISRM_STRICT_WARNINGS=ON
-cmake --build build
-ctest --test-dir build --output-on-failure
+mkdir build && cmake ..
+make 
 ```
-
-The chemistry calculation uses `std::cyl_bessel_k` when available and a
-Boost.Math fallback otherwise.
 
 ## Basic usage
 
@@ -71,21 +61,16 @@ For fragmentation-only mode 1, use the same command and change only `--mode 3`
 to `--mode 1`. The Recomb/Wigner and omega options may remain in the command;
 they are accepted but are not used in mode 1.
 
-These values currently match the charm production defaults, but spelling them
-out records the complete physics configuration.
+These values currently match the charm production defaults.
 
-`--seed` is optional. If omitted, a random seed is generated automatically and
-printed in the run summary. Specify `--seed <value>` when exact reproducibility
-is required.
+
 
 ## Hadronization modes
 
-- `1 = Frag`: Peterson fragmentation and charm feeddown; Recomb/Wigner tables
-  are not loaded.
-- `2 = Recomb`: currently a pass-through mode. HQs are written unchanged, and
-  neither Frag chemistry nor Recomb/Wigner tables are loaded.
+- `1 = Frag`: Peterson fragmentation and charm feeddown.
+- `2 = Recomb`: currently a pass-through mode. HQs are written unchanged.
 - `3 = Frag + Recomb`: the normal production mode. Recombination is attempted
-  first and unsuccessful candidates follow the fragmentation path.
+  first, and unsuccessful candidates follow the fragmentation path.
 
 ## I/O formats
 
@@ -129,8 +114,6 @@ origin = 2  Recomb
 | `m_s` | 0.40 GeV | strange-quark mass |
 | `m_g` | 0.30 GeV | effective gluon mass |
 
-The corresponding CLI options are shown by `--help`. Constituent masses are
-configuration defaults rather than separate CLI options.
 
 ## Default charm inputs
 
@@ -152,10 +135,10 @@ For example, to use the available alternate omega/table pair, replace all four
 matching arguments in a complete mode-3 command:
 
 ```bash
-  --omega-m 0.21 \
-  --omega-b 0.259 \
-  --recomb-table data/recomb_c_raw_M021_B0259.dat \
-  --wigner-table data/max_wigner_c_M021_B0259.dat
+  --omega-m 0.24 \
+  --omega-b 0.24 \
+  --recomb-table data/recomb_c_raw.dat \
+  --wigner-table data/max_wigner_c.dat
 ```
 
 ## Hadron origin metadata
@@ -171,21 +154,6 @@ Each particle carries a hadronization-origin tag internally:
 The tag is written only by the `analysis` format. Charm feeddown preserves the
 Frag or Recomb origin of the primary hadron.
 
-## Validation and tests
-
-The CTest suite covers Lorentz transformations, chemistry and Peterson
-parameters, feeddown and Recomb behavior, mode handling, the three I/O schemas,
-and origin metadata.
-
-The fixed-input, fixed-seed production regression has the expected output
-SHA-256:
-
-```text
-a29a85e3460e968ce587b27eba87c630a527998ef9d7011558345505162d05c0
-```
-
-This regression checks that the validated default simulation output remains
-unchanged for the fixed input and RNG seed.
 
 ## Current limitations
 
