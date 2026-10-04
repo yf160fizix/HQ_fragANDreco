@@ -7,7 +7,7 @@ It provides vacuum fragmentation and a hybrid QGP treatment that combines
 fragmentation with recombination (coalescence, implemented here as iSRM). 
 
 In the fragmentation path, heavy quarks are converted into hadrons with an
-explicit Peterson momentum-fragmentation function. Hadron-species probabilities
+explicit Peterson fragmentation function. Hadron-species probabilities
 are sampled separately from a statistical hadronization model. The associated reference is
 [Charm-hadron production in pp and AA collisions](https://arxiv.org/abs/2002.00392).
 
@@ -58,7 +58,7 @@ configuration and all input tables explicitly:
 ```
 
 For fragmentation-only mode 1, use the same command and change `--mode 3`
-to `--mode 1`, `--tchem 0.160' to `--tchem 0.170 '. The Recomb/Wigner and omega options may remain in the command;
+to `--mode 1`, `--tchem 0.160` to `--tchem 0.170`. The Recomb/Wigner and omega options may remain in the command;
 they are accepted but are not used in mode 1.
 
 These values currently match the charm production defaults.
@@ -101,15 +101,15 @@ origin = 2  Recomb
 
 | Parameter | Default | Meaning |
 |---|---:|---|
-| `Tchem` | 0.160 GeV | charm chemistry/hadronization temperature |
+| `Tchem` | 0.160 GeV | charm hadronization temperature in QGP |
 | `gamma_s` | 0.7 | strange-hadron chemistry factor |
 | `gamma_HB` | 1.0 | primary heavy-baryon fragmentation weight factor |
 | `eps_M` | 0.01 | Peterson epsilon for charm mesons |
 | `eps_B` | 0.03 | Peterson epsilon for charm baryons |
 | `omega_M` | 0.20 GeV | charm-meson oscillator scale |
 | `omega_B` | 0.267 GeV | charm-baryon oscillator scale |
-| `m_c` | 1.8 GeV | charm-quark mass |
-| `m_b` | 5.2 GeV | bottom-quark mass |
+| `m_c` | 1.8 GeV | charm-quark mass for recombination |
+| `m_b` | 5.2 GeV | bottom-quark mass for recombination|
 | `m_q` | 0.30 GeV | light-quark mass |
 | `m_s` | 0.40 GeV | strange-quark mass |
 | `m_g` | 0.30 GeV | effective gluon mass |
